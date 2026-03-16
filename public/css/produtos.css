@@ -1,0 +1,10 @@
+#tabelaProdutos {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#tabelaProdutos th, 
+#tabelaProdutos td {
+  text-align: center;
+  vertical-align: middle;
+}

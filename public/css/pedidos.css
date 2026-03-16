@@ -1,0 +1,39 @@
+#tabelaPedidos th, 
+#tabelaPedidos td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.itens-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.itens-lista li {
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.btn-acao {
+  margin: 2px;
+}
+
+/* Cores para status */
+.status-finalizado {
+  background-color: #d4edda; /* verde claro */
+  color: #155724;
+  font-weight: bold;
+}
+
+.status-cancelado {
+  background-color: #f8d7da; /* vermelho claro */
+  color: #721c24;
+  font-weight: bold;
+}
+
+.status-andamento {
+  background-color: #fff3cd; /* amarelo claro */
+  color: #856404;
+  font-weight: bold;
+}
