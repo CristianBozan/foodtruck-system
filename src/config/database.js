@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 // Supabase (produção) usa DATABASE_URL; MySQL local usa variáveis individuais
 const sequelize = process.env.DATABASE_URL
