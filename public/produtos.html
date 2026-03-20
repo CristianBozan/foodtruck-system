@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produtos</title>
-  <!-- Bootstrap -->
+  <title>Produtos — Food Truck</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- CSS global -->
   <link rel="stylesheet" href="css/style.css">
-  <!-- CSS específico -->
   <link rel="stylesheet" href="css/produtos.css">
 </head>
 <body class="bg-light">
@@ -16,34 +13,42 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">Food Truck</a>
+      <a class="navbar-brand fw-bold" href="index.html">🍔 Food Truck</a>
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link active" href="produtos.html">Produtos</a></li>
           <li class="nav-item"><a class="nav-link" href="pedidos.html">Pedidos</a></li>
           <li class="nav-item"><a class="nav-link" href="relatorios.html">Relatórios</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3"><span class="text-light opacity-75" id="nomeUsuario"></span></li>
+          <li class="nav-item"><button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Conteúdo -->
   <div class="container mt-5">
     <h2 class="mb-4">📦 Lista de Produtos</h2>
 
     <!-- Formulário de cadastro -->
     <form id="formProduto" class="mb-4">
       <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-5">
           <input type="text" id="nome" class="form-control" placeholder="Nome do Produto" required>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <input type="number" step="0.01" id="preco" class="form-control" placeholder="Preço (R$)" required>
+        </div>
+        <div class="col-md-2">
+          <input type="number" id="estoque" class="form-control" placeholder="Estoque" value="0">
         </div>
         <div class="col-md-2">
           <button type="submit" class="btn btn-primary w-100">Adicionar</button>
         </div>
       </div>
+      <div id="msgProduto" class="mt-2 d-none"></div>
     </form>
 
     <!-- Tabela de produtos -->
@@ -53,15 +58,16 @@
           <th>ID</th>
           <th>Nome</th>
           <th>Preço</th>
+          <th>Estoque</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Script específico -->
+  <script src="js/auth.js"></script>
   <script src="js/produtos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

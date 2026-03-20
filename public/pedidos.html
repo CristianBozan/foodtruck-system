@@ -3,12 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pedidos</title>
-  <!-- Bootstrap -->
+  <title>Pedidos — Food Truck</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- CSS global -->
   <link rel="stylesheet" href="css/style.css">
-  <!-- CSS específico -->
   <link rel="stylesheet" href="css/pedidos.css">
 </head>
 <body class="bg-light">
@@ -16,20 +13,25 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">Food Truck</a>
+      <a class="navbar-brand fw-bold" href="index.html">🍔 Food Truck</a>
       <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="produtos.html">Produtos</a></li>
           <li class="nav-item"><a class="nav-link active" href="pedidos.html">Pedidos</a></li>
           <li class="nav-item"><a class="nav-link" href="relatorios.html">Relatórios</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3"><span class="text-light opacity-75" id="nomeUsuario"></span></li>
+          <li class="nav-item"><button class="btn btn-outline-light btn-sm" onclick="logout()">Sair</button></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Conteúdo -->
   <div class="container mt-5">
     <h2 class="mb-4">📝 Lista de Pedidos</h2>
+    <div id="msgPedidos" class="alert alert-info d-none">Carregando pedidos...</div>
     <table class="table table-bordered table-hover shadow-sm" id="tabelaPedidos">
       <thead class="table-dark">
         <tr>
@@ -45,9 +47,8 @@
     </table>
   </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Script específico -->
+  <script src="js/auth.js"></script>
   <script src="js/pedidos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

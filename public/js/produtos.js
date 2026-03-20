@@ -1,40 +1,65 @@
-const API_URL = "http://localhost:3000/produtos";
+checkAuth();
+mostrarUsuario();
 
-// Carregar produtos
-function carregarProdutos() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(produtos => {
-      const tbody = document.querySelector("#tabelaProdutos tbody");
-      tbody.innerHTML = "";
-      produtos.forEach(p => {
-        tbody.innerHTML += `
-          <tr>
-            <td>${p.id_produto}</td>
-            <td>${p.nome}</td>
-            <td>R$ ${parseFloat(p.preco).toFixed(2)}</td>
-          </tr>
-        `;
-      });
-    });
+async function carregarProdutos() {
+  const res = await fetch('/produtos', { headers: getAuthHeaders() });
+  if (res.status === 401) { logout(); return; }
+  const produtos = await res.json();
+
+  const tbody = document.querySelector('#tabelaProdutos tbody');
+  tbody.innerHTML = '';
+
+  if (!Array.isArray(produtos) || produtos.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Nenhum produto cadastrado.</td></tr>';
+    return;
+  }
+
+  produtos.forEach(p => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${p.id_produto}</td>
+        <td>${p.nome}</td>
+        <td>R$ ${parseFloat(p.preco).toFixed(2)}</td>
+        <td>${p.estoque_atual ?? '—'}</td>
+        <td><span class="badge ${p.status === 'ativo' ? 'bg-success' : 'bg-secondary'}">${p.status || '—'}</span></td>
+      </tr>
+    `;
+  });
 }
 
-// Cadastrar produto
-document.getElementById("formProduto").addEventListener("submit", async (e) => {
+document.getElementById('formProduto').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const nome = document.getElementById("nome").value;
-  const preco = document.getElementById("preco").value;
+  const msg = document.getElementById('msgProduto');
+  msg.className = 'mt-2';
 
-  await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nome, preco })
+  const body = {
+    nome:   document.getElementById('nome').value.trim(),
+    preco:  parseFloat(document.getElementById('preco').value),
+    estoque_atual: parseInt(document.getElementById('estoque').value) || 0
+  };
+
+  const res = await fetch('/produtos', {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
   });
 
-  // Limpa formulário e recarrega lista
-  e.target.reset();
-  carregarProdutos();
+  if (res.status === 401) { logout(); return; }
+
+  if (res.ok) {
+    msg.textContent = 'Produto adicionado com sucesso!';
+    msg.classList.add('alert', 'alert-success');
+    msg.classList.remove('d-none');
+    e.target.reset();
+    carregarProdutos();
+  } else {
+    const err = await res.json();
+    msg.textContent = err.error || 'Erro ao adicionar produto.';
+    msg.classList.add('alert', 'alert-danger');
+    msg.classList.remove('d-none');
+  }
+
+  setTimeout(() => msg.classList.add('d-none'), 3000);
 });
 
-// Inicializa
 carregarProdutos();

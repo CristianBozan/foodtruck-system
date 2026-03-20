@@ -1,55 +1,71 @@
-const API_URL = "http://localhost:3000/relatorios";
+// Dashboard principal
+checkAuth();
+mostrarUsuario();
 
-// Faturamento por Dia
-fetch(`${API_URL}/vendas-por-dia`)
-  .then(res => res.json())
-  .then(data => {
-    const labels = data.map(d => d.data);
-    const valores = data.map(d => d.total_vendas);
+async function carregarDashboard() {
+  const headers = getAuthHeaders();
 
-    new Chart(document.getElementById("chartVendasDia"), {
-      type: "line",
+  // Resumo Geral
+  try {
+    const res = await fetch('/relatorios/resumo', { headers });
+    if (res.status === 401) { logout(); return; }
+    const data = await res.json();
+    document.getElementById('faturamento').textContent =
+      'R$ ' + parseFloat(data.faturamento_total || 0).toFixed(2);
+    document.getElementById('qtdVendas').textContent = data.quantidade_vendas || 0;
+    document.getElementById('ticketMedio').textContent =
+      'R$ ' + parseFloat(data.ticket_medio || 0).toFixed(2);
+  } catch (err) {
+    console.error('Erro ao carregar resumo:', err);
+  }
+
+  // Faturamento por Dia
+  try {
+    const res = await fetch('/relatorios/vendas-por-dia', { headers });
+    const data = await res.json();
+    const labels  = data.map(d => d.data);
+    const valores = data.map(d => parseFloat(d.total_vendas));
+
+    new Chart(document.getElementById('chartVendasDia'), {
+      type: 'line',
       data: {
         labels,
         datasets: [{
-          label: "Faturamento (R$)",
+          label: 'Faturamento (R$)',
           data: valores,
-          borderColor: "#4CAF50",
-          backgroundColor: "rgba(76, 175, 80, 0.2)",
+          borderColor: '#28a745',
+          backgroundColor: 'rgba(40,167,69,0.15)',
           fill: true,
           tension: 0.3
         }]
-      }
+      },
+      options: { responsive: true, plugins: { legend: { display: false } } }
     });
-  });
+  } catch (err) {
+    console.error('Erro ao carregar vendas por dia:', err);
+  }
 
-// Vendas por Forma de Pagamento
-fetch(`${API_URL}/vendas-por-pagamento`)
-  .then(res => res.json())
-  .then(data => {
-    const labels = data.map(d => d.forma_pagamento);
-    const valores = data.map(d => d.total_vendas);
+  // Vendas por Forma de Pagamento
+  try {
+    const res = await fetch('/relatorios/vendas-por-pagamento', { headers });
+    const data = await res.json();
+    const labels  = data.map(d => d.forma_pagamento);
+    const valores = data.map(d => parseFloat(d.total_vendas));
 
-    new Chart(document.getElementById("chartPagamento"), {
-      type: "pie",
+    new Chart(document.getElementById('chartPagamento'), {
+      type: 'pie',
       data: {
         labels,
         datasets: [{
           data: valores,
-          backgroundColor: ["#2196F3", "#FF9800", "#4CAF50", "#E91E63", "#9C27B0"]
+          backgroundColor: ['#007bff','#ffc107','#28a745','#dc3545','#6f42c1']
         }]
-      }
+      },
+      options: { responsive: true }
     });
-  });
+  } catch (err) {
+    console.error('Erro ao carregar pagamentos:', err);
+  }
+}
 
-// Resumo Geral
-fetch(`${API_URL}/resumo`)
-  .then(res => res.json())
-  .then(data => {
-    const resumoEl = document.getElementById("resumo");
-    resumoEl.innerHTML = `
-      <li><strong>Quantidade de Vendas:</strong> ${data.quantidade_vendas}</li>
-      <li><strong>Faturamento Total:</strong> R$ ${parseFloat(data.faturamento_total).toFixed(2)}</li>
-      <li><strong>Ticket Médio:</strong> R$ ${parseFloat(data.ticket_medio).toFixed(2)}</li>
-    `;
-  });
+carregarDashboard();
