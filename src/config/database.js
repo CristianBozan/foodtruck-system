@@ -1,5 +1,8 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config({ quiet: true });
+// Require explícito para garantir inclusão no bundle do Vercel (ncc)
+require('pg');
+require('pg-hstore');
 
 // Supabase (produção) usa DATABASE_URL; MySQL local usa variáveis individuais
 const sequelize = process.env.DATABASE_URL
