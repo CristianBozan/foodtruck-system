@@ -1,7 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "src/app.js", "use": "@vercel/node", "config": { "includeFiles": ["src/**", "public/**"], "bundle": false } }
+    { "src": "src/app.js", "use": "@vercel/node", "config": { "includeFiles": ["src/**", "public/**", "node_modules/pg/**", "node_modules/pg-hstore/**", "node_modules/sequelize/**"], "externalNodeModules": ["pg", "pg-hstore", "sequelize"] } }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "src/app.js" }
