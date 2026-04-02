@@ -11,6 +11,9 @@ const logger = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 const swaggerSpec = require('./docs/swagger');
 
+// ── Proxy (Vercel / reverse proxies) ───────────────────────────────────────
+app.set('trust proxy', 1);
+
 // ── Segurança ──────────────────────────────────────────────────────────────
 app.use(helmet());
 
