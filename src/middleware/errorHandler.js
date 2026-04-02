@@ -3,6 +3,7 @@ const logger = require('./logger');
 function errorHandler(err, req, res, next) {
   const status = err.status || err.statusCode || 500;
 
+  console.error('[DEBUG]', err.message, err.stack);
   logger.error({
     message: err.message,
     status,
